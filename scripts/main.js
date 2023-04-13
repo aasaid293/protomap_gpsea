@@ -43,12 +43,23 @@ let googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 });
 
+let mapBox = L.tileLayer('https://api.mapbox.com/styles/v1/crpmap/ckl6sx8ot43yz17mruycfl92s/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY3JwbWFwIiwiYSI6ImNqeWs4bnVrNTBiMXEzYm1ubnRmYjllbGcifQ.CjzcbDoBXsqtcJ-E5E7SWg',{
+    maxZoom:19
+
+});
+
+let cartoStreets = L.tileLayer('https://api.mapbox.com/styles/v1/crpmap/clgdjshf000he01p0du8h72zm/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiY3JwbWFwIiwiYSI6ImNqeWs4bnVrNTBiMXEzYm1ubnRmYjllbGcifQ.CjzcbDoBXsqtcJ-E5E7SWg', {
+    maxZoom:19
+});
+
 let baseLayers = {
     "OSM Standard": OSM_Stardard,
     "CartoDB Voyager": cartoDB_Voyager,
     "Geoportail France": geoportailFrance,
     "Google Streets": googleStreets,
-    "Google Satellite": googleSat
+    "Google Satellite": googleSat,
+    "MapBox":mapBox,
+    "MapBox Streets": cartoStreets
 };
 
 //Map creation
@@ -60,6 +71,9 @@ let myMap = L.map('map', {
 //L.control.layers(baseLayers).addTo(myMap);
 
 //Load geoJSON data add add them to the map
+
+let plaine_Vallee = L.geoJSON.ajax('./data/Plaine_Vallee_Geojson.geojson').addTo(myMap);
+
 let healthLayer = L.geoJSON.ajax('./data/GPSEA_Sante2.geojson', {
     pointToLayer: returnHealthMarker,
     onEachFeature: onEachHealthFeature
